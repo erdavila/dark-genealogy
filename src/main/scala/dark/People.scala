@@ -1,6 +1,7 @@
 package dark
 
 import dark.Gender.{Female, Male}
+import dark.Relation.ParentOf
 
 object People {
   val Agnes: Person = Person("Agnes", Female)
@@ -72,11 +73,14 @@ object People {
     parentsOf(Hermann, Helene)(Katharina) ++
     parentOf(Sebastian)(Hannah)
 
-  type ParentOf
-
   private def parentsOf(parent1: Person, parent2: Person)(child: Person, moreChildren: Person*): Set[ParentOf] =
-    ???
+    for {
+      c <- moreChildren.toSet + child
+      (pA, pB) <- Set((parent1, parent2), (parent2, parent1))
+    } yield ParentOf(pA, c, Some(pB))
 
   private def parentOf(parent: Person)(child: Person, moreChildren: Person*): Set[ParentOf] =
-    ???
+    for {
+      c <- moreChildren.toSet + child
+    } yield ParentOf(parent, c, None)
 }
