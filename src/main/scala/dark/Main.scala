@@ -1,15 +1,30 @@
 package dark
 
+import dark.Path.Direction
+
 object Main {
 
   def main(args: Array[String]): Unit =
     args.toList match {
       case character1 :: character2 :: Nil =>
-        println(character1)
-        println(character2)
+        def personEither(character: String) =
+          Index.PeopleByName.get(character)
+            .toRight(s"Character ${quoted(character)} is invalid")
+
+        val personPairEither = for {
+          p1 <- personEither(character1)
+          p2 <- personEither(character2)
+        } yield (p1, p2)
+
+        personPairEither match {
+          case Left(errorMessage) => System.out.println(errorMessage)
+          case Right((person1, person2)) =>
+            showPath(person1, person2, Direction.Down)
+            println()
+            showPath(person1, person2, Direction.Up)
+        }
 
       case "--list" :: _ =>
-        def quoted(s: String) = s""""$s""""
         Index.PeopleByName
           .groupMap(_._2.name)(_._1)
           .toSeq
@@ -29,4 +44,20 @@ object Main {
         println("  <character> <character>")
         println("  --list")
     }
+
+  private def quoted(s: String) =
+    s""""$s""""
+
+  private def showPath(from: Person, to: Person, direction: Direction): Unit = {
+    val directionText = direction match {
+      case Direction.Down => " down"
+      case Direction.Up => " up"
+      case Direction.All => ""
+    }
+    println(s"From ${from.name}$directionText to ${to.name}")
+    Path.shortest(direction)(from, to) match {
+      case Some(path) => path.foreach(rel => println(s"  $rel"))
+      case None => println("  Path not found")
+    }
+  }
 }
