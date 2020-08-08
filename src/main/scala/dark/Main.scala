@@ -2,15 +2,24 @@ package dark
 
 import dark.Path.Direction
 import dark.display.{OneLine, Sentences}
+import scala.util.Random
 
 object Main {
 
+  private val RandomCharacterName = "RANDOM"
+
   def main(args: Array[String]): Unit =
     args.toList match {
-      case character1 :: character2 :: Nil =>
-        def personEither(character: String) =
-          Index.PeopleByName.get(character)
-            .toRight(s"Character ${quoted(character)} is invalid")
+      case character1 :: character2 :: Nil => {
+        def personEither(character: String): Either[String, Person] =
+          if (character == RandomCharacterName) {
+            val people = Index.PeopleByName.values.toSeq.distinct
+            val index = Random.nextInt(people.size)
+            Right(people(index))
+          } else {
+            Index.PeopleByName.get(character)
+              .toRight(s"Character ${quoted(character)} is invalid")
+          }
 
         val personPairEither = for {
           p1 <- personEither(character1)
@@ -24,6 +33,7 @@ object Main {
             println()
             showPath(person1, person2, Direction.Up)
         }
+      }
 
       case "--list" :: _ =>
         Index.PeopleByName
@@ -39,6 +49,7 @@ object Main {
             }
             println(quoted(name) + aliasesText)
           }
+        println(RandomCharacterName)
 
       case _ =>
         println("Use arguments:")
