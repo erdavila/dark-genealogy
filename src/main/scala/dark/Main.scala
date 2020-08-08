@@ -1,7 +1,7 @@
 package dark
 
 import dark.Path.Direction
-import dark.display.Sentences
+import dark.display.{OneLine, Sentences}
 
 object Main {
 
@@ -57,7 +57,10 @@ object Main {
     }
     println(s"From ${from.name}$directionText to ${to.name}")
     Path.shortest(direction)(from, to) match {
-      case Some(path) => Sentences.get(path).foreach(sentence => println(s"  $sentence"))
+      case Some(path) =>
+        println(s"  ${OneLine.get(path)}")
+        println()
+        Sentences.get(path).foreach(sentence => println(s"  $sentence"))
       case None => println("  Path not found")
     }
   }
