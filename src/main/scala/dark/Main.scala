@@ -1,7 +1,7 @@
 package dark
 
 import dark.Path.Direction
-import dark.display.{OneLine, Sentences}
+import dark.display.{Graph, OneLine, Sentences}
 import scala.util.Random
 
 object Main {
@@ -66,12 +66,15 @@ object Main {
       case Direction.Up => " up"
       case Direction.All => ""
     }
+
     println(s"From ${from.name}$directionText to ${to.name}")
     Path.shortest(direction)(from, to) match {
       case Some(path) =>
         println(s"  ${OneLine.get(path)}")
         println()
         Sentences.get(path).foreach(sentence => println(s"  $sentence"))
+        println()
+        Graph.get(path).foreach(line => println(s"  $line"))
       case None => println("  Path not found")
     }
   }

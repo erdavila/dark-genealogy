@@ -11,3 +11,5 @@ scalacOptions in ThisBuild ++= Seq(
   "-Xfatal-warnings",
   "-Xlint",
 )
+
+libraryDependencies += "com.lihaoyi" %% "fansi" % "0.2.7"
