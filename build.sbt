@@ -13,3 +13,4 @@ scalacOptions in ThisBuild ++= Seq(
 )
 
 libraryDependencies += "com.lihaoyi" %% "fansi" % "0.2.7"
+libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"

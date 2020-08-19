@@ -1,7 +1,6 @@
 package dark
 
 object Index {
-
   val ParentOfMap: Map[Person, Set[Relation]] =
     People.ParentOfs
       .groupMapReduce(_.source)(parentOf => Set(parentOf: Relation))(_ `union` _)
@@ -11,7 +10,10 @@ object Index {
       .map(_.inverted)
       .groupMapReduce(_.source)(Set(_))(_ `union` _)
 
-  val PeopleByName: Map[String, Person] =
-    People.Aliases ++
-      (ParentOfMap.keySet ++ ChildOfMap.keySet).map(person => person.name -> person)
+  val PeopleByName: Map[String, Person] = {
+    for {
+      p <- People.All
+      a <- p.name :: p.aliases
+    } yield a -> p
+  }.toMap
 }
