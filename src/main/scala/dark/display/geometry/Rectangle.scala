@@ -1,4 +1,4 @@
-package dark.display.graph.geometry
+package dark.display.geometry
 
 case class Rectangle(top: Int, bottom: Int, left: Int, right: Int) {
   def topLeft: Position = Position(top, left)

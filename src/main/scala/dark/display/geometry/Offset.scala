@@ -1,4 +1,4 @@
-package dark.display.graph.geometry
+package dark.display.geometry
 
 case class Offset(lines: Int, columns: Int) {
   def unary_- : Offset = Offset(-lines, -columns)

@@ -1,9 +1,8 @@
 package dark.display.graph
 
-import dark.display.graph.geometry._
+import dark.display.geometry._
 
-trait Drawable {
-  def dimensions: Dimensions
+trait Drawable extends HasDimensions {
   def drawOver(lines: FansiLines, leftTop: Position)(implicit coloring: Coloring): FansiLines
 }
 
@@ -135,19 +134,5 @@ object Drawable {
 
       linesBefore ++ drawnOverLines ++ linesAfter
     }
-  }
-
-  implicit class DrawableOps[A <: Drawable](private val drawable: A) extends AnyVal {
-    def topLeftAt(position: Position): Positioned[A] =
-      Positioned(drawable, position)
-
-    def topMiddleAt(position: Position): Positioned[A] =
-      topLeftAt(position - Offset.columns(drawable.dimensions.halfWidth))
-
-    def topRightAt(position: Position): Positioned[A] =
-      topLeftAt(position - Offset.columns(drawable.dimensions.width))
-
-    def bottomLeftAt(position: Position): Positioned[A] =
-      topLeftAt(position - Offset.lines(drawable.dimensions.height))
   }
 }

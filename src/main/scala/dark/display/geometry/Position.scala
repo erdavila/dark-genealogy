@@ -1,4 +1,4 @@
-package dark.display.graph.geometry
+package dark.display.geometry
 
 case class Position(line: Int, column: Int) {
   def +(offset: Offset): Position = Position(

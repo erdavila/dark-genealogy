@@ -2,7 +2,7 @@ package dark.display.graph
 
 import dark.Path.Path
 import dark.Relation.{ChildOf, ParentOf}
-import dark.display.graph.geometry.{Dimensions, Offset, Position, Positioned}
+import dark.display.geometry.{Dimensions, Offset, Position, Positioned}
 import scala.annotation.tailrec
 
 class Graph(val sourceLabel: Positioned[Drawable], val targetLabel: Positioned[Drawable])(allDrawables: Positioned[Drawable]*)
@@ -13,6 +13,8 @@ class Graph(val sourceLabel: Positioned[Drawable], val targetLabel: Positioned[D
       height = allDrawables.view.map(_.rectangle.bottom).max,
       width = allDrawables.view.map(_.rectangle.right).max,
     )
+
+  import Graph.PositionedDrawableOps
 
   def draw(implicit coloring: Coloring): FansiLines = {
     val line = Drawable.blanksLine(dimensions.width)
@@ -189,9 +191,14 @@ object Graph {
 
   private implicit class PositionedGraphOps(private val pg: Positioned[Graph]) extends AnyVal {
     def sourceLabel: Positioned[Drawable] =
-      pg.drawable.sourceLabel.offset(pg.topLeftPosition.asOffset)
+      pg.thing.sourceLabel.offset(pg.topLeftPosition.asOffset)
 
     def targetLabel: Positioned[Drawable] =
-      pg.drawable.targetLabel.offset(pg.topLeftPosition.asOffset)
+      pg.thing.targetLabel.offset(pg.topLeftPosition.asOffset)
+  }
+
+  private implicit class PositionedDrawableOps(private val pd: Positioned[Drawable]) extends AnyVal {
+    def drawOver(lines: FansiLines)(implicit coloring: Coloring): FansiLines =
+      pd.thing.drawOver(lines, pd.topLeftPosition)
   }
 }
