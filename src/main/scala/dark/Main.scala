@@ -1,7 +1,8 @@
 package dark
 
 import dark.Path.Direction
-import dark.display.{Graph, OneLine, Sentences}
+import dark.Relation.{ChildOf, ParentOf}
+import dark.display.{Graph, OneLine, Sentences, Snake}
 import scala.util.Random
 
 object Main {
@@ -35,19 +36,17 @@ object Main {
         }
       }
 
-      case "--list" :: _ =>
-        Index.PeopleByName
-          .groupMap(_._2.name)(_._1)
+      case "--list" :: Nil =>
+        People.All
           .toSeq
-          .sortBy(_._1)
-          .foreach { case (name, variations) =>
-            val aliases = variations.filter(_ != name).toList
-            val aliasesText = aliases match {
+          .sortBy(_.name)
+          .foreach { person =>
+            val aliasesText = person.aliases match {
               case Nil => ""
               case alias :: Nil => " Alias: " + quoted(alias)
-              case _ => " Aliases: " + aliases.sorted.map(quoted).mkString(", ")
+              case _ => " Aliases: " + person.aliases.sorted.map(quoted).mkString(", ")
             }
-            println(quoted(name) + aliasesText)
+            println(quoted(person.name) + aliasesText)
           }
         println(RandomCharacterName)
 
@@ -75,6 +74,8 @@ object Main {
         Sentences.get(path).foreach(sentence => println(s"  $sentence"))
         println()
         Graph.get(path).foreach(line => println(s"  $line"))
+        println()
+        Snake.get(path).foreach(line => println(s"  $line"))
       case None => println("  Path not found")
     }
   }

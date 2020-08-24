@@ -17,5 +17,8 @@ object HasDimensions {
 
     def bottomLeftAt(position: Position): Positioned[A] =
       topLeftAt(position - Offset.lines(hd.dimensions.height))
+
+    def bottomMiddleAt(position: Position): Positioned[A] =
+      bottomLeftAt(position - Offset.columns(hd.dimensions.halfWidth))
   }
 }
