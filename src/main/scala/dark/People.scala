@@ -15,7 +15,6 @@ object People {
       ("Bernd"      ->> Person("Bernd", Gender.Male)) ::
       ("Charlotte"  ->> Person("Charlotte", Gender.Female)) ::
       ("Claudia"    ->> Person("Claudia", Gender.Female)) ::
-      ("Daniel"     ->> Person("Daniel", Gender.Male)) ::
       ("Doris"      ->> Person("Doris", Gender.Female)) ::
       ("Egon"       ->> Person("Egon", Gender.Male)) ::
       ("Elisabeth"  ->> Person("Elisabeth", Gender.Female)) ::
@@ -25,7 +24,6 @@ object People {
       ("Helene"     ->> Person("Helene", Gender.Female)) ::
       ("Helge"      ->> Person("Helge", Gender.Male)) ::
       ("Hermann"    ->> Person("Hermann", Gender.Male)) ::
-      ("Ines"       ->> Person("Ines", Gender.Female)) ::
       ("Jana"       ->> Person("Jana", Gender.Female)) ::
       ("Katharina"  ->> Person("Katharina", Gender.Female)) ::
       ("Mads"       ->> Person("Mads", Gender.Male)) ::
@@ -75,7 +73,6 @@ object People {
       berndSel:      Sel[L, "Bernd"],
       charlotteSel:  Sel[L, "Charlotte"],
       claudiaSel:    Sel[L, "Claudia"],
-      danielSel:     Sel[L, "Daniel"],
       dorisSel:      Sel[L, "Doris"],
       egonSel:       Sel[L, "Egon"],
       elisabethSel:  Sel[L, "Elisabeth"],
@@ -85,7 +82,6 @@ object People {
       helgeSel:      Sel[L, "Helge"],
       heleneSel:     Sel[L, "Helene"],
       hermannSel:    Sel[L, "Hermann"],
-      inesSel:       Sel[L, "Ines"],
       janaSel:       Sel[L, "Jana"],
       katharinaSel:  Sel[L, "Katharina"],
       madsSel:       Sel[L, "Mads"],
@@ -111,8 +107,6 @@ object People {
       parentsOf(people("Egon"), people("Doris"))(people("Claudia")) ++
       parentsOf(people("Claudia"), people("Bernd"))(people("Regina")) ++
       parentsOf(people("Regina"), people("Aleksander"))(people("Bartosz")) ++
-      // Kahnwald
-      parentOf(people("Daniel"))(people("Ines")) ++
       // others
       parentsOf(people("Noah"), people("Elisabeth"))(people("Charlotte")) ++
       parentsOf(people("Bartosz"), people("Silja"))(people("Noah"), people("Agnes")) ++
