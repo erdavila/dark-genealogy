@@ -1,8 +1,6 @@
 package dark
 
 import dark.Path.Direction
-import dark.Relation.{ChildOf, ParentOf}
-import dark.display.{Graph, OneLine, Sentences, Snake}
 import scala.util.Random
 
 object Main {
@@ -50,6 +48,9 @@ object Main {
           }
         println(RandomCharacterName)
 
+      case "--extremes" :: Nil =>
+        Extremes.findAndShow()
+
       case _ =>
         println("Use arguments:")
         println("  <character> <character>")
@@ -65,18 +66,8 @@ object Main {
       case Direction.Up => " up"
       case Direction.All => ""
     }
-
-    println(s"From ${from.name}$directionText to ${to.name}")
-    Path.shortest(direction)(from, to) match {
-      case Some(path) =>
-        println(s"  ${OneLine.get(path)}")
-        println()
-        Sentences.get(path).foreach(sentence => println(s"  $sentence"))
-        println()
-        Graph.get(path).foreach(line => println(s"  $line"))
-        println()
-        Snake.get(path).foreach(line => println(s"  $line"))
-      case None => println("  Path not found")
+    display.show(s"From ${from.name}$directionText to ${to.name}") {
+      Path.shortest(direction)(from, to)
     }
   }
 }
